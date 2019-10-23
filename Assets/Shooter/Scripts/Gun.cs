@@ -52,7 +52,7 @@ public class Gun : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        muzzleFlash = GetComponent<Muzzleflash>();
+        //muzzleFlash = GetComponent<Muzzleflash>();
         shotsRemainingInBurst = burstCount;
         projectilesRemainingInMag = ProjectilesPerMag;
         source = GetComponent<AudioSource>();
