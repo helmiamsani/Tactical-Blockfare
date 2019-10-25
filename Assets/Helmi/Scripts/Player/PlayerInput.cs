@@ -7,8 +7,10 @@ public class PlayerInput : MonoBehaviour
     public float mouseX;
     public float mouseY;
     public float moveToward;
-    public float moveBack;
+    public float moveSide;
     public bool fire1;
+    public bool scope;
+    public bool run;
     public bool jump;
     public bool crouch;
     public bool getDown;
@@ -19,8 +21,10 @@ public class PlayerInput : MonoBehaviour
         mouseX = Input.GetAxis("Mouse X"); // Input for moving mouse on the X axis.
         mouseY = Input.GetAxis("Mouse Y"); // Input for moving mouse on the Y axis.
         moveToward = Input.GetAxis("Horizontal"); // Input for moving player toward.
-        moveBack = Input.GetAxis("Vertical"); // Input for moving player backward.
+        moveSide = Input.GetAxis("Vertical"); // Input for moving player backward.
         fire1 = Input.GetMouseButtonDown(0); // Input for firing.
+        scope = Input.GetMouseButton(1); // Input for scoping.
+        run = Input.GetKey(KeyCode.LeftShift); // Input for run.
         jump = Input.GetKeyDown(KeyCode.Space); // Input for jumping.
         crouch = Input.GetKeyDown(KeyCode.C); // Input for crouch.
         getDown = Input.GetKeyDown(KeyCode.LeftControl); // Input for getdown.

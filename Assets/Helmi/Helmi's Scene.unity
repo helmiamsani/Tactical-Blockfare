@@ -1405,6 +1405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 389929070}
+  - component: {fileID: 389929071}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -1427,6 +1428,25 @@ Transform:
   m_Father: {fileID: 854386167}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &389929071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389929069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0653dc97323d9149a5c8cfbed445033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: 1
+  turnSmooth: 0.1
+  tiltMax: 45
+  tiltMin: -45
+  addShake: 0
+  shakeAmountX: 0
+  shakeAmountY: 0.3
 --- !u!1 &421179757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,6 +2322,8 @@ GameObject:
   - component: {fileID: 854386165}
   - component: {fileID: 854386164}
   - component: {fileID: 854386163}
+  - component: {fileID: 854386168}
+  - component: {fileID: 854386169}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2324,8 +2346,10 @@ MonoBehaviour:
   mouseX: 0
   mouseY: 0
   moveToward: 0
-  moveBack: 0
+  moveSide: 0
   fire1: 0
+  scope: 0
+  run: 0
   jump: 0
   crouch: 0
   getDown: 0
@@ -2403,6 +2427,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &854386168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854386162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1606b451194eb8f4f91f53048b8b452f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 25
+  moveSpeed: 20
+  aimingSpeed: 15
+  curSpeed: 0
+--- !u!54 &854386169
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854386162}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 4
+  m_AngularDrag: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &877995805
 GameObject:
   m_ObjectHideFlags: 0
