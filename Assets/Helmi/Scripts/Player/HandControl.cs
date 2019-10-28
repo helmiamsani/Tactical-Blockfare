@@ -9,44 +9,72 @@ public class HandControl : MonoBehaviour
     public float positionShakeSpeed = 5f;
     public float changeShakeRate = 15;
     public float moveSpeed = 2;
-    public Transform handsGO;
+    public Transform handHolder;
 
 
     [Header("Field Of View")]
-    public float ironSightFOV = 20f;
-    public float normalFOV = 30;
+    public float ironSightFOV = 10f; // Default
+    public float normalFOV = 50f; // Default
 
     [Header("Position & Rotation")]
-    public Vector3 cameraPosition;
+    
     public Vector3 ironSightPosition;
-    public Vector3 originalPosition;
+    public Vector3 ironSightRotation;
 
     [Header("References")]
     public ParticleSystem[] muzzleFlash;
     public AudioSource gunShotAudioSource;
     public GameObject impactPrefab;
     public Animator weaponAnimator;
-
-    public bool debugAim = true;
+    public CameraShake camShake;
 
     private PlayerInput _plyrInput;
     private WaitForSeconds _fRate;
 
     private float _targetShake;
-    private float _targetFOV;
 
     private Camera _mainCam;
     private CameraControl _camControl;
-    private Transform _camHolderTransfrom;
+    private Transform _camShake;
 
     private Quaternion _originalRotation;
-    private Vector3 _targetPosition;
     private Quaternion _targetRotation;
+    private Vector3 _originalPosition;
+    private Vector3 _targetPosition;
+    private Vector3 _camShakeInitialPos;
+    private Vector3 _cameraPosition;
 
 
     private void Start()
     {
         _plyrInput = GetComponent<PlayerInput>();
+        _camControl = GetComponentInChildren<CameraControl>();
+        camShake = FindObjectOfType<CameraShake>();
+        _mainCam = Camera.main;
+        _camShake = camShake.transform;
+        _camShakeInitialPos = camShake.transform.localPosition;
+        _mainCam.fieldOfView = normalFOV;
+        _originalPosition = Vector3.zero;
+        _originalRotation = Quaternion.identity;
+        _fRate = new WaitForSeconds(fireRate);
     }
 
+    private void FixedUpdate()
+    {
+        if (_plyrInput.scope)
+        {
+            handHolder.localPosition = ironSightPosition;
+            _targetShake = 0;
+            _mainCam.fieldOfView = ironSightFOV;
+            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _cameraPosition, Time.deltaTime * moveSpeed * 2);
+        }
+        else
+        {
+            handHolder.localPosition = _originalPosition;
+            _targetShake = 0.1f;
+            _mainCam.fieldOfView = normalFOV;
+            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed * 2);
+           // _camShake.localPosition = _camShakeInitialPos;
+        }
+    }
 }
