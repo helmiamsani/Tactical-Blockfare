@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 50f;
     public float aimingSpeed = 25f;
     public float curSpeed;
+    public float walkMovement = 5f;
     #endregion
 
     #region Private Variables
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float _horizontal;
     private float _vertical;
+    private float _walkMovement;
     private bool _fire1;
     #endregion
 
@@ -30,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
         _plyrInput = GetComponent<PlayerInput>();
         _rigid = GetComponent<Rigidbody>();
         _cameraHolder = this.gameObject.transform.GetChild(0).transform;
+        _rigid.useGravity = true;
+        _walkMovement = walkMovement;
     }
 
     // Update is called once per frame
@@ -54,5 +58,32 @@ public class PlayerMovement : MonoBehaviour
 
         _rigid.AddForce(_cameraHolder.forward * _vertical * curSpeed);
         _rigid.AddForce(_cameraHolder.right * _horizontal * curSpeed);
+    }
+    private void Update()
+    {
+        DetailMovement();
+    }
+
+    void DetailMovement()
+    {
+        if (curSpeed == moveSpeed)
+        {
+            Debug.Log("Time = " + Time.deltaTime);
+            if (Time.time > walkMovement)
+            {
+                Debug.Log("Walk Movement = " + walkMovement);
+                Debug.Log("Second Walk Movement = " + _walkMovement);
+                if (this.gameObject.transform.localPosition.x <= 1.2f)
+                {
+                    _rigid.AddForce(this.gameObject.transform.up * curSpeed);
+                    _rigid.useGravity = false;
+                }
+                else
+                {
+                    _rigid.useGravity = true;
+                }
+                walkMovement = walkMovement + _walkMovement;
+            }
+        }
     }
 }
