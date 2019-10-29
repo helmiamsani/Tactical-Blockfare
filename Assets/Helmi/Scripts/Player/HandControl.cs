@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class HandControl : MonoBehaviour
 {
-    public bool canFire = true;
-    public float fireRate = 0.1f;
-    public float positionShakeSpeed = 5f;
-    public float changeShakeRate = 15;
     public float moveSpeed = 2;
     public Transform handHolder;
 
@@ -32,6 +28,7 @@ public class HandControl : MonoBehaviour
     private WaitForSeconds _fRate;
 
     private float _targetShake;
+    private float _cameraFOVVelocity = 0;
 
     private Camera _mainCam;
     private CameraControl _camControl;
@@ -56,24 +53,23 @@ public class HandControl : MonoBehaviour
         _mainCam.fieldOfView = normalFOV;
         _originalPosition = Vector3.zero;
         _originalRotation = Quaternion.identity;
-        _fRate = new WaitForSeconds(fireRate);
     }
 
     private void FixedUpdate()
     {
         if (_plyrInput.scope)
         {
-            handHolder.localPosition = ironSightPosition;
+            handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, ironSightPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0;
-            _mainCam.fieldOfView = ironSightFOV;
-            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _cameraPosition, Time.deltaTime * moveSpeed * 2);
+            _mainCam.fieldOfView = Mathf.SmoothDamp(_mainCam.fieldOfView, ironSightFOV, ref _cameraFOVVelocity, moveSpeed * 6);
+            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _cameraPosition, Time.deltaTime * moveSpeed);
         }
         else
         {
-            handHolder.localPosition = _originalPosition;
+            handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, _originalPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0.1f;
-            _mainCam.fieldOfView = normalFOV;
-            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed * 2);
+            _mainCam.fieldOfView = Mathf.SmoothDamp(_mainCam.fieldOfView, normalFOV, ref _cameraFOVVelocity, moveSpeed * 6);
+            _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed);
            // _camShake.localPosition = _camShakeInitialPos;
         }
     }
