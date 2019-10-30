@@ -61,14 +61,14 @@ public class HandControl : MonoBehaviour
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, ironSightPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0;
-            _mainCam.fieldOfView = Mathf.SmoothDamp(_mainCam.fieldOfView, ironSightFOV, ref _cameraFOVVelocity, moveSpeed * 6);
+            _mainCam.fieldOfView = ironSightFOV;
             _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _cameraPosition, Time.deltaTime * moveSpeed);
         }
         else
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, _originalPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0.1f;
-            _mainCam.fieldOfView = Mathf.SmoothDamp(_mainCam.fieldOfView, normalFOV, ref _cameraFOVVelocity, moveSpeed * 6);
+            _mainCam.fieldOfView = normalFOV;
             _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed);
            // _camShake.localPosition = _camShakeInitialPos;
         }

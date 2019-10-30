@@ -2,16 +2,11 @@
 using System.Collections;
 
 
-public class Enemy : MonoBehaviour, IDamageable
+public class AlexEnemy : MonoBehaviour, IDamageable
 {
     public ParticleSystem deathEffect;
     
     public float Health = 100;
-	// Use this for initialization
-	void Start () {
-
-	}
-	
 	// Update is called once per frame
 	void Update () {
 
