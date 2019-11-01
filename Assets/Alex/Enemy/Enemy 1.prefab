@@ -42,10 +42,8 @@ GameObject:
   - component: {fileID: 5069016492895545556}
   - component: {fileID: 5893549431782176352}
   - component: {fileID: 1968428547527388387}
-  - component: {fileID: 8517022640588717441}
-  - component: {fileID: 8858568727859097770}
   - component: {fileID: 1229467161}
-  - component: {fileID: 1229467162}
+  - component: {fileID: 1174551437}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -127,37 +125,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8517022640588717441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6593381257095257311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af0f4a2c288f0f04ba0b1cabe89b6ecd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weighting: 7.5
-  target: {fileID: 0}
---- !u!114 &8858568727859097770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6593381257095257311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1944fb86a1341ee4a971df97f4840ebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVelocity: 15
-  maxDistance: 10
-  velocity: {x: 0, y: 0, z: 0}
-  behaviours: []
-  agent: {fileID: 1229467161}
 --- !u!195 &1229467161
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -168,7 +135,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -180,7 +147,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1229467162
+--- !u!114 &1174551437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,10 +156,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6593381257095257311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f86b5649f2b6a408c043a67a07efc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 771a22033ef74e1459e29a5beaed45ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  healthBarParent: {fileID: 0}
-  healthBarUIPrefab: {fileID: 5837984023849142572, guid: ccfcf6524f6cb5f47a208991da4de4da,
-    type: 3}
+  wanderPoint: {x: 0, y: 0, z: 0}
+  wanderRadius: 10
+  fov: 120
+  viewDistance: 7
+  isAware: 0
