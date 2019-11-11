@@ -3325,6 +3325,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 675607064}
     m_Modifications:
+    - target: {fileID: 8877144124678992918, guid: 902ef4c66bdcbd4459468ae57c3a1064,
+        type: 3}
+      propertyPath: m_Name
+      value: AK 47
+      objectReference: {fileID: 0}
     - target: {fileID: 4982597051261493604, guid: 902ef4c66bdcbd4459468ae57c3a1064,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3394,11 +3399,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7618663
-      objectReference: {fileID: 0}
-    - target: {fileID: 8877144124678992918, guid: 902ef4c66bdcbd4459468ae57c3a1064,
-        type: 3}
-      propertyPath: m_Name
-      value: AK 47
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 902ef4c66bdcbd4459468ae57c3a1064, type: 3}
@@ -4770,6 +4770,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 854386168}
+    - target: {fileID: 1174551437, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
+      propertyPath: fov
+      value: 120
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
 --- !u!1001 &1782507549
