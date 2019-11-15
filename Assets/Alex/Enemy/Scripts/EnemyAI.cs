@@ -6,7 +6,9 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-	private NavMeshAgent agent;
+	[HideInInspector]
+	public NavMeshAgent agent;
+	public Transform playerTransform;
 	public PlayerMovement player;
 	private Renderer rend;
 	//Refenrence Player script for target
@@ -14,12 +16,10 @@ public class EnemyAI : MonoBehaviour
 	public float wanderRadius = 10f;
 	private float halfFov;
 	public float fov = 120f;
-	public float viewDistance = 7f;
+	public float viewDistance = 10f;
+	public float stopDistance = 2f;
 	public bool isAware = false;
-
-	//Drawing Field Of View
-	
-
+	public bool isAttacked = false;//NEED TO REFER TO PLAYER BULLET TO SET AWARE TRUE
 	private void Start()
 	{
 		halfFov = fov / 2f;
@@ -27,9 +27,12 @@ public class EnemyAI : MonoBehaviour
 		agent = GetComponent<NavMeshAgent>();
 		wanderPoint = RandomWanderPoint();
 
+
 	}
+	//Drawing Field Of View
 	private void OnDrawGizmos()
 	{
+		Gizmos.color = Color.blue;
 		//Draw a left ray base on the fov/2
 		Quaternion leftRayRotation = Quaternion.AngleAxis(-halfFov, Vector3.up);
 		//Draw right ray base on the fov/2
@@ -47,11 +50,21 @@ public class EnemyAI : MonoBehaviour
 	{
 		if (isAware)
 		{
-			//Move the enemy to the target
-			agent.SetDestination(player.transform.position);
-			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
+
+			//Check if the enemy is close to the player
+			if (Vector3.Distance(player.transform.position, transform.position) < stopDistance)
+			{
+				Stop();
+			}
+			else
+			{
+				Chase();
+			}
+
+
 		}
+
 		else
 		{
 			SearchPlayer();
@@ -67,6 +80,7 @@ public class EnemyAI : MonoBehaviour
 		if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(player.transform.position)) < halfFov)
 		{
 			//Set the distance from the angle
+
 			if (Vector3.Distance(player.transform.position, transform.position) < viewDistance)
 			{
 				RaycastHit hit;
@@ -77,15 +91,26 @@ public class EnemyAI : MonoBehaviour
 					if (hit.transform.CompareTag("Player"))
 					{
 						//Set enemy on aware state
-						OnAware();
+						isAware = true;
 					}
 				}
 			}
 		}
 	}
-	public void OnAware()
+
+
+	public void Chase()
 	{
-		isAware = true;
+		agent.speed = 3.5f;
+		//Move the enemy to the target
+		agent.SetDestination(player.transform.position);
+		//Change the color of the enemy into Aware state
+	}
+	public void Stop()
+	{
+		agent.speed = 0f;//Stop the movement
+		transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
+		//COULD BE ATTACK FUNCTION HERE
 	}
 	public void Wander()
 	{
