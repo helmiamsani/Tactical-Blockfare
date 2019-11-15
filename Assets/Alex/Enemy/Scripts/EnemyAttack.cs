@@ -45,7 +45,7 @@ public class EnemyAttack : MonoBehaviour
 						{
 							if(player)
 							{
-								//Debug.Log(hit.transform.name + " Take Damage");
+								
 								fireTime = Time.time + fireRate;
 								ammoAmount--;
 								if(ammoAmount ==0)
@@ -69,7 +69,6 @@ public class EnemyAttack : MonoBehaviour
 			}
 
 		}
-		Debug.Log(ammoAmount);
 	}
 	IEnumerator Reload()
 	{

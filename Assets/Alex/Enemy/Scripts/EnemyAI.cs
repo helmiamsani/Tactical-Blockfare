@@ -50,6 +50,7 @@ public class EnemyAI : MonoBehaviour
 	{
 		if (isAware)
 		{
+			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
 
 			//Check if the enemy is close to the player
@@ -64,7 +65,6 @@ public class EnemyAI : MonoBehaviour
 
 
 		}
-
 		else
 		{
 			SearchPlayer();
@@ -92,6 +92,7 @@ public class EnemyAI : MonoBehaviour
 					{
 						//Set enemy on aware state
 						isAware = true;
+						rend.material.color = Color.yellow;
 					}
 				}
 			}
@@ -104,12 +105,15 @@ public class EnemyAI : MonoBehaviour
 		agent.speed = 3.5f;
 		//Move the enemy to the target
 		agent.SetDestination(player.transform.position);
-		//Change the color of the enemy into Aware state
+
 	}
 	public void Stop()
 	{
 		agent.speed = 0f;//Stop the movement
-		transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
+		//Using Slerp to rotate slowly to the player direction
+		Quaternion lookAtTarget = Quaternion.LookRotation(player.transform.position - transform.position);
+		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, 1.3f*Time.deltaTime);
+		//transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
 		//COULD BE ATTACK FUNCTION HERE
 	}
 	public void Wander()
