@@ -51,7 +51,7 @@ public class HandControl : MonoBehaviour
         _camShake = camShake.transform;
         _camShakeInitialPos = camShake.transform.localPosition;
         _mainCam.fieldOfView = normalFOV;
-        _originalPosition = Vector3.zero;
+        _originalPosition = handHolder.localPosition;
         _originalRotation = Quaternion.identity;
     }
 
