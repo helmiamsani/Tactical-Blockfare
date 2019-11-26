@@ -10,7 +10,7 @@ public class HandControl : MonoBehaviour
 
     [Header("Field Of View")]
     public float ironSightFOV = 10f; // Default
-    public float normalFOV = 50f; // Default
+    private float _normalFOV; // Default
 
     [Header("Position & Rotation")]
     
@@ -50,7 +50,7 @@ public class HandControl : MonoBehaviour
         _mainCam = Camera.main;
         _camShake = camShake.transform;
         _camShakeInitialPos = camShake.transform.localPosition;
-        _mainCam.fieldOfView = normalFOV;
+        _normalFOV = _mainCam.fieldOfView;
         _originalPosition = handHolder.localPosition;
         _originalRotation = Quaternion.identity;
     }
@@ -68,7 +68,7 @@ public class HandControl : MonoBehaviour
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, _originalPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0.1f;
-            _mainCam.fieldOfView = normalFOV;
+            _mainCam.fieldOfView = _normalFOV;
             _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed);
            // _camShake.localPosition = _camShakeInitialPos;
         }
