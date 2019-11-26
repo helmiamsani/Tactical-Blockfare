@@ -60,9 +60,10 @@ public class EnemyAttack : MonoBehaviour
 							StartCoroutine("Reload");
 						}
 					}
-
+                   
 				}
-			}
+                
+            }
 			else
 			{
 				canAttack = false;

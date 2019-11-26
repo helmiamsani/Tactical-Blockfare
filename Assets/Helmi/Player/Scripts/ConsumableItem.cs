@@ -5,26 +5,33 @@ using UnityEngine;
 public class ConsumableItem : MonoBehaviour
 {
     private PlayerInput _plyrInput;
-    private Camera _mainCam;
-    private Transform _rayOut;
+    public Transform rayOut;
+    public float detectRange = 10f;
+
+    private Vector3 fwd;
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(rayOut.position,fwd * detectRange);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         _plyrInput = GetComponent<PlayerInput>();
-        _mainCam = GetComponentInChildren<Camera>();
-        _rayOut = _mainCam.GetComponentInChildren<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        fwd = rayOut.TransformDirection(Vector3.forward);
         if (_plyrInput.interact)
         {
-            RaycastHit hit;
-
-            if (Physics.Raycast(_rayOut.position, Vector3.forward, out hit, 10))
+            RaycastHit hit;  
+            if (Physics.Raycast(rayOut.position, fwd, out hit, detectRange))
             {
+                Debug.Log(gameObject.name);
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("It's an item");
@@ -32,4 +39,5 @@ public class ConsumableItem : MonoBehaviour
             }
         }
     }
+    
 }
