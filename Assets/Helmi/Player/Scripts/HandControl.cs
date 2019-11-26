@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class HandControl : MonoBehaviour
 {
+    //public Transform scopeAimPos;
+    //public GameObject rayOut;
+    //public Transform _normalRayOutPos;
     public float moveSpeed = 2;
     public Transform handHolder;
+    public Transform primaryWeaponPos;
 
 
     [Header("Field Of View")]
@@ -15,7 +19,8 @@ public class HandControl : MonoBehaviour
     [Header("Position & Rotation")]
     
     public Vector3 ironSightPosition;
-    public Vector3 ironSightRotation;
+    //public Vector3 ironSightRotation;
+    public Vector3 scopePrimWeaponPos;
 
     [Header("References")]
     public ParticleSystem[] muzzleFlash;
@@ -40,6 +45,7 @@ public class HandControl : MonoBehaviour
     private Vector3 _targetPosition;
     private Vector3 _camShakeInitialPos;
     private Vector3 _cameraPosition;
+    private Vector3 _normalPrimaryWeaponPos;
 
 
     private void Start()
@@ -53,6 +59,10 @@ public class HandControl : MonoBehaviour
         _normalFOV = _mainCam.fieldOfView;
         _originalPosition = handHolder.localPosition;
         _originalRotation = Quaternion.identity;
+        _normalPrimaryWeaponPos = primaryWeaponPos.localPosition;
+        //_normalRayOutPos = rayOut.transform;
+        //_normalRayOutPos.position = rayOut.transform.position;
+       // Debug.Log(_normalRayOutPos.position);
     }
 
     private void FixedUpdate()
@@ -61,8 +71,11 @@ public class HandControl : MonoBehaviour
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, ironSightPosition, Time.deltaTime * moveSpeed);
             _targetShake = 0;
+            primaryWeaponPos.localPosition = scopePrimWeaponPos; 
             _mainCam.fieldOfView = ironSightFOV;
             _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _cameraPosition, Time.deltaTime * moveSpeed);
+            //rayOut.transform.position = scopeAimPos.transform.position;
+            
         }
         else
         {
@@ -70,7 +83,9 @@ public class HandControl : MonoBehaviour
             _targetShake = 0.1f;
             _mainCam.fieldOfView = _normalFOV;
             _camShake.localPosition = Vector3.Lerp(_camShake.localPosition, _camShakeInitialPos, Time.deltaTime * moveSpeed);
-           // _camShake.localPosition = _camShakeInitialPos;
+            primaryWeaponPos.localPosition = _normalPrimaryWeaponPos;
+            //rayOut.transform.position = _normalRayOutPos.position;
+            // _camShake.localPosition = _camShakeInitialPos;
         }
     }
 }
