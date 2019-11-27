@@ -31,9 +31,10 @@ public class ConsumableItem : MonoBehaviour
             RaycastHit hit;  
             if (Physics.Raycast(rayOut.position, fwd, out hit, detectRange))
             {
-                if (hit.collider.CompareTag("Item"))
+                if (hit.collider.CompareTag("Health"))
                 {
-                    Debug.Log("It's an item");
+                    HealthItem health = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthItem>();
+                    health.Heal();
                 }
             }
         }

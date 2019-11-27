@@ -222,6 +222,7 @@ public class Weapon : MonoBehaviour
         {
             currentAccuracy = accuracy;
         }
+        // Untuk scope menghilangkan GUI.
         if (showCrosshair)
         {
             // Hold the location of the center of the screen in a variable

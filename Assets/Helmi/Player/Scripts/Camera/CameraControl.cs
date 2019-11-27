@@ -32,7 +32,7 @@ public class CameraControl : MonoBehaviour
         euler.x -= Input.GetAxis("Mouse Y") * speed.y * Time.deltaTime;
 
         // Clamp the camera on pitch
-        
+        Mathf.Clamp(euler.x, minPitch, maxPitch);
         // Apply euler to the Player & Camera seperately
         transform.parent.localEulerAngles = new Vector3(0, euler.y, 0);
         transform.localEulerAngles = new Vector3(euler.x, 0, 0);

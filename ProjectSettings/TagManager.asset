@@ -7,6 +7,7 @@ TagManager:
   - Item
   - Main Weapon
   - Second Weapon
+  - Health
   layers:
   - Default
   - TransparentFX

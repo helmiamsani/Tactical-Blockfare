@@ -16,8 +16,8 @@ public class HandControl : MonoBehaviour
 
 
     [Header("Field Of View")]
-    public float ironSightFOV = 10f; // Default
-    private float _normalFOV; // Default
+    public float ironSightFOV = 30f;
+    private float _normalFOV;
 
     [Header("POSITION & ROTATION"),Space(5)]
     [Header("Default")]
@@ -29,46 +29,26 @@ public class HandControl : MonoBehaviour
     [Header("Scope Secondary")]
     public Vector3 scopeSecondWeaponPos;
     public Vector3 scopeSecondWeaponRot;
-    [Header("References")]
-    public ParticleSystem[] muzzleFlash;
-    public AudioSource gunShotAudioSource;
-    public GameObject impactPrefab;
-    public Animator weaponAnimator;
 
     private PlayerInput _plyrInput;
-    private WaitForSeconds _fRate;
-
-    private float _targetShake;
-    private float _cameraFOVVelocity = 0;
 
     private Camera _mainCam;
-    private CameraControl _camControl;
 
-    private Quaternion _originalRotation;
-    private Quaternion _targetRotation;
     //private Quaternion _normalPrimaryWeaponRotation;
     private Vector3 _originalPosition;
-    private Vector3 _targetPosition;
-    private Vector3 _cameraPosition;
     private Vector3 _normalPrimaryWeaponPos;
     private Vector3 _normalSecondaryWeaponPos;
 
 
     private void Start()
-    {
-       
+    {       
         _plyrInput = GetComponent<PlayerInput>();
-        _camControl = GetComponentInChildren<CameraControl>();
         _mainCam = Camera.main;
         _normalFOV = _mainCam.fieldOfView;
         _originalPosition = handHolder.localPosition;
-        _originalRotation = Quaternion.identity;
         _normalPrimaryWeaponPos = primaryWeaponPos.localPosition;
         //_normalPrimaryWeaponRotation = primaryWeaponPos.localRotation;
         _normalSecondaryWeaponPos = secondWeaponPos.localPosition;
-        //_normalRayOutPos = rayOut.transform;
-        //_normalRayOutPos.position = rayOut.transform.position;
-       // Debug.Log(_normalRayOutPos.position);
     }
 
     private void FixedUpdate()
@@ -76,26 +56,22 @@ public class HandControl : MonoBehaviour
         if (_plyrInput.scope)
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, ironSightPosition, Time.deltaTime * moveSpeed);
-            _targetShake = 0;
             primaryWeaponPos.localPosition = scopePrimWeaponPos;
             secondWeaponPos.localPosition = scopeSecondWeaponPos;
-            primaryWeaponPos.localRotation = Quaternion.Lerp(primaryWeaponPos.localRotation, Quaternion.Euler(scopePrimWeaponRot), Time.deltaTime * moveSpeed); 
-            secondWeaponPos.localRotation = Quaternion.Lerp(secondWeaponPos.localRotation, Quaternion.Euler(scopeSecondWeaponRot), Time.deltaTime * moveSpeed); 
+           //primaryWeaponPos.localRotation = Quaternion.Lerp(primaryWeaponPos.localRotation, Quaternion.Euler(scopePrimWeaponRot), Time.deltaTime * moveSpeed); 
+            //secondWeaponPos.localRotation = Quaternion.Lerp(secondWeaponPos.localRotation, Quaternion.Euler(scopeSecondWeaponRot), Time.deltaTime * moveSpeed); 
             _mainCam.fieldOfView = ironSightFOV;
-            //rayOut.transform.position = scopeAimPos.transform.position;
             
         }
         else
         {
             handHolder.localPosition = Vector3.Lerp(handHolder.localPosition, _originalPosition, Time.deltaTime * moveSpeed);
-            _targetShake = 0.1f;
             _mainCam.fieldOfView = _normalFOV;
-            primaryWeaponPos.localRotation = Quaternion.Lerp(primaryWeaponPos.localRotation, Quaternion.Euler(ironSightRotation), Time.deltaTime * moveSpeed);
+            //primaryWeaponPos.localRotation = Quaternion.Lerp(primaryWeaponPos.localRotation, Quaternion.Euler(ironSightRotation), Time.deltaTime * moveSpeed);
+            //secondWeaponPos.localRotation = Quaternion.Lerp(secondWeaponPos.localRotation, Quaternion.Euler(ironSightPosition), Time.deltaTime * moveSpeed);
             primaryWeaponPos.localPosition = _normalPrimaryWeaponPos;
             secondWeaponPos.localPosition = _normalSecondaryWeaponPos;
             //primaryWeaponPos.localRotation = _normalPrimaryWeaponRotation;
-            //rayOut.transform.position = _normalRayOutPos.position;
-            // _camShake.localPosition = _camShakeInitialPos;
         }
     }
 }
