@@ -52,7 +52,11 @@ public class EnemyAI : MonoBehaviour
 		{
 			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
-
+            
+            if(player == null)
+            {
+                return;
+            }
 			//Check if the enemy is close to the player
 			if (Vector3.Distance(player.transform.position, transform.position) < stopDistance)
 			{

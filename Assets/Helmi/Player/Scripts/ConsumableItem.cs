@@ -31,7 +31,6 @@ public class ConsumableItem : MonoBehaviour
             RaycastHit hit;  
             if (Physics.Raycast(rayOut.position, fwd, out hit, detectRange))
             {
-                Debug.Log(gameObject.name);
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log("It's an item");
