@@ -1,10 +1,9 @@
-﻿// * ALEX LIU *
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyMovementWayPoints : MonoBehaviour
 {
 	[Header("Movement")]
 	[HideInInspector]
@@ -13,8 +12,6 @@ public class EnemyAI : MonoBehaviour
 	public PlayerMovement player;
 	private Renderer rend;
 	//Refenrence Player script for target
-	public Vector3 wanderPoint;
-	public float wanderRadius = 10f;
 	private float halfFov;
 	public float fov = 120f;
 	public float viewDistance = 10f;
@@ -22,15 +19,20 @@ public class EnemyAI : MonoBehaviour
 	public float detectPlayerRange = 5f;
 	public bool isAware = false;
 	public bool isAttacked = false;//NEED TO REFER TO PLAYER BULLET TO SET AWARE TRUE
+	[Header("Waypoints")]
+	public Transform target;
+	[SerializeField]
+	private int wayPointIndex;
 
 	
+
+
 	private void Start()
 	{
 		halfFov = fov / 2f;
 		rend = GetComponent<Renderer>();//Renderer for material
 		agent = GetComponent<NavMeshAgent>();
-		wanderPoint = RandomWanderPoint();
-
+		target = Waypoint.wayPoints[0];
 
 	}
 	//Drawing Field Of View
@@ -56,11 +58,11 @@ public class EnemyAI : MonoBehaviour
 		{
 			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
-            
-            if(player == null)
-            {
-                return;
-            }
+
+			if (player == null)
+			{
+				return;
+			}
 			//Check if the enemy is close to the player
 			if (Vector3.Distance(player.transform.position, transform.position) < stopDistance)
 			{
@@ -77,7 +79,7 @@ public class EnemyAI : MonoBehaviour
 		{
 			SearchPlayer();
 			DetectPlayerNearby();
-			Wander();
+			Patrol();
 			rend.material.color = Color.blue;
 		}
 
@@ -108,7 +110,35 @@ public class EnemyAI : MonoBehaviour
 		}
 	}
 
+	public void Patrol()
+	{
+		agent.SetDestination(target.position);
 
+		//Just In Case it generate waypoint index higher than the waypoint index length
+		if (wayPointIndex >= Waypoint.wayPoints.Length + 1)
+		{
+			wayPointIndex = 0;
+			target = Waypoint.wayPoints[wayPointIndex];
+		}
+		
+		//Set the range value higher so it will switch into the next waypoint index
+		if (Vector3.Distance(transform.position,target.position)<=3f)
+		{
+			wayPointIndex++;
+			if(wayPointIndex >=Waypoint.wayPoints.Length)
+			{
+				wayPointIndex = 0;
+			}
+			target = Waypoint.wayPoints[wayPointIndex];
+				
+		}
+
+		else
+		{
+			agent.SetDestination(target.position);
+		}
+		
+	}
 	public void Chase()
 	{
 		agent.speed = 3.5f;
@@ -119,46 +149,19 @@ public class EnemyAI : MonoBehaviour
 	public void Stop()
 	{
 		agent.speed = 0f;//Stop the movement
-		//Using Slerp to rotate slowly to the player direction
+						 //Using Slerp to rotate slowly to the player direction
 		Quaternion lookAtTarget = Quaternion.LookRotation(player.transform.position - transform.position);
-		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, 1.3f*Time.deltaTime);
+		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, 1.3f * Time.deltaTime);
 		//transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
 		//COULD BE ATTACK FUNCTION HERE
 	}
-	public void Wander()
-	{
-		//FIXED BUG WHICH SOMETIME CASTING INFINITY VALUE 
-		if(wanderPoint.x == Mathf.Infinity || wanderPoint.y ==Mathf.Infinity || wanderPoint.z == Mathf.Infinity)
-		{
-			RandomWanderPoint();
-			wanderPoint = RandomWanderPoint();
-		}
-		//Generate new randompoint value when reached destination
-		if (Vector3.Distance(transform.position, wanderPoint) < 0.2f)
-		{
-			wanderPoint = RandomWanderPoint();
-		}
-		else
-		{
-			//Move to the randompoint location
-			agent.SetDestination(wanderPoint);
-		}
-	}
-	public Vector3 RandomWanderPoint()
-	{
-		//Set the Range of the random position
-		Vector3 randomPoint = (Random.insideUnitSphere * wanderRadius) + transform.position;
-		NavMeshHit navHit;
-		//Set the random point value in the sampleposition
-		NavMesh.SamplePosition(randomPoint, out navHit, wanderRadius, -1);
-		//Return the value in vector3 so we can use set agent desitination into the hit position
-		return new Vector3(navHit.position.x, transform.position.y, navHit.position.z);
-	}
 	public void DetectPlayerNearby()
 	{
-		if (Vector3.Distance(transform.position, player.transform.position) <= detectPlayerRange)
+		if(Vector3.Distance(transform.position,player.transform.position) <= detectPlayerRange )
 		{
 			isAware = true;
 		}
 	}
+	
+	
 }

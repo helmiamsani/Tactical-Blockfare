@@ -1,12 +1,11 @@
-﻿//*ALEX LIU*
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour
+public class Enemy2Attack : MonoBehaviour
 {
 	private GameObject player;
-	private EnemyAI enemyAI;
+	private EnemyMovementWayPoints enemyMovement;
 	//Need Player Health Reference Script
 	public float fireRate = 1f;
 	private float fireTime;
@@ -18,11 +17,9 @@ public class EnemyAttack : MonoBehaviour
 	[Header("Health")]
 	public float curHealth = 100f;
 	private float minHealth = 0f;
-
-	//Stopping Distance Modifier
-	private float originalStopDistance = 25f;
+	//"Stopping Distance Modifier"
+	private float originalStopDistance =25f;
 	private float tempChaseDistance = 5f;
-
 	private void OnDrawGizmos()
 	{
 
@@ -31,17 +28,16 @@ public class EnemyAttack : MonoBehaviour
 	}
 	private void Start()
 	{
-
 		ammoAmount = 4;
 		player = GameObject.FindGameObjectWithTag("Player");
-		enemyAI = GetComponent<EnemyAI>();
+		enemyMovement = GetComponent<EnemyMovementWayPoints>();
 	}
 	private void Update()
 	{
-		if (enemyAI.isAware)
+		if (enemyMovement.isAware)
 		{
 
-			if (Vector3.Distance(enemyAI.transform.position, transform.position) < attackRange)
+			if (Vector3.Distance(enemyMovement.transform.position, transform.position) < attackRange)
 			{
 				RaycastHit hit;
 				if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange))
@@ -59,10 +55,10 @@ public class EnemyAttack : MonoBehaviour
 							canAttack = true;
 						}
 						canAttack = false;
-						enemyAI.stopDistance = tempChaseDistance;//Chase the player
+						enemyMovement.stopDistance = tempChaseDistance;//Chase the player
 					}
 					else
-						enemyAI.stopDistance = originalStopDistance;//Set back to the originalStopping Distance
+						enemyMovement.stopDistance = originalStopDistance;//Set back to the originalStopping Distance
 					if (Time.time > fireTime && ammoAmount > 0 && canAttack == true)
 					{
 						if (player == null)
@@ -95,21 +91,21 @@ public class EnemyAttack : MonoBehaviour
 			{
 				canAttack = false;
 			}
-			Debug.Log(player.tag);
+
 		}
 	}
 	IEnumerator Reload()
 	{
-		enemyAI.agent.speed = 0f;
+		enemyMovement.agent.speed = 0f;
 		canAttack = false;
 		yield return new WaitForSeconds(3f);
 		ammoAmount = 4;
-		enemyAI.agent.speed = 3.5f;
+		enemyMovement.agent.speed = 3.5f;
 		canAttack = true;
 	}
 	public void TakeDamage(int damage)
 	{
-		enemyAI.isAware = true;
+		enemyMovement.isAware = true;
 		curHealth += damage;
 
 		if (curHealth <= minHealth)

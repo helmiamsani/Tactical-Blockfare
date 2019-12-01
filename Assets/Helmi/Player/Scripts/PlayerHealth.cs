@@ -16,15 +16,11 @@ public class PlayerHealth : MonoBehaviour
     {
         get
         {
-            Debug.Log("Get "+curHealth);
-
             return curHealth; 
         }
         set
         {
-            Debug.Log("Set");
-
-            curHealth = value;
+     curHealth = value;
             curHealth = Mathf.Clamp(curHealth, minHealth, maxHealth);
             if(curHealth <= minHealth)
             {
