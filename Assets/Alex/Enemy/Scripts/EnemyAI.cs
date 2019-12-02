@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+	#region VARIABLES
 	[Header("Movement")]
 	[HideInInspector]
 	public NavMeshAgent agent; //Public for EnemyAttack Script
@@ -15,15 +16,18 @@ public class EnemyAI : MonoBehaviour
 	//Refenrence Player script for target
 	public Vector3 wanderPoint;
 	public float wanderRadius = 10f;
+	[Header("Viewing Angle")]
 	private float halfFov;
 	public float fov = 120f;
 	public float viewDistance = 10f;
 	public float stopDistance = 2f;
 	public float detectPlayerRange = 5f;
+	public float lookAtPlayerSpeed = 1.2f;
 	public bool isAware = false;
 	public bool isAttacked = false;//NEED TO REFER TO PLAYER BULLET TO SET AWARE TRUE
+	#endregion
 
-	
+	#region UNITY FUNCTIONS
 	private void Start()
 	{
 		halfFov = fov / 2f;
@@ -56,17 +60,17 @@ public class EnemyAI : MonoBehaviour
 		{
 			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
-            
-            if(player == null)
-            {
-                return;
-            }
+
+			if (player == null)
+			{
+				return;
+			}
 			//Check if the enemy is close to the player
 			if (Vector3.Distance(player.transform.position, transform.position) < stopDistance)
 			{
 				Stop();
 			}
-			else
+			else if (Vector3.Distance(player.transform.position, transform.position) > stopDistance)
 			{
 				Chase();
 			}
@@ -82,7 +86,8 @@ public class EnemyAI : MonoBehaviour
 		}
 
 	}
-
+	#endregion
+	#region FUNCTIONS
 	public void SearchPlayer()
 	{
 		//Set the angle in the game object
@@ -108,10 +113,10 @@ public class EnemyAI : MonoBehaviour
 		}
 	}
 
-
+	
 	public void Chase()
 	{
-		agent.speed = 3.5f;
+		agent.speed = 5f;
 		//Move the enemy to the target
 		agent.SetDestination(player.transform.position);
 
@@ -119,16 +124,16 @@ public class EnemyAI : MonoBehaviour
 	public void Stop()
 	{
 		agent.speed = 0f;//Stop the movement
-		//Using Slerp to rotate slowly to the player direction
+						 //Using Slerp to rotate slowly to the player direction
 		Quaternion lookAtTarget = Quaternion.LookRotation(player.transform.position - transform.position);
-		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, 1.3f*Time.deltaTime);
+		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, lookAtPlayerSpeed * Time.deltaTime);
 		//transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
-		//COULD BE ATTACK FUNCTION HERE
+
 	}
 	public void Wander()
 	{
 		//FIXED BUG WHICH SOMETIME CASTING INFINITY VALUE 
-		if(wanderPoint.x == Mathf.Infinity || wanderPoint.y ==Mathf.Infinity || wanderPoint.z == Mathf.Infinity)
+		if (wanderPoint.x == Mathf.Infinity || wanderPoint.y == Mathf.Infinity || wanderPoint.z == Mathf.Infinity)
 		{
 			RandomWanderPoint();
 			wanderPoint = RandomWanderPoint();
@@ -161,4 +166,5 @@ public class EnemyAI : MonoBehaviour
 			isAware = true;
 		}
 	}
+	#endregion
 }

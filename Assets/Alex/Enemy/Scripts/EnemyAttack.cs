@@ -5,24 +5,39 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+	#region VARIABLES
 	private GameObject player;
 	private EnemyAI enemyAI;
+
 	//Need Player Health Reference Script
-	public float fireRate = 1f;
+	[Header("Shooting Modifier")]
+	public float fireRate = 0.2f;
 	private float fireTime;
-	public float attackRange = 5f;
-	public int ammoAmount;
+	public float attackRange = 25f;
+	public int currentAmmo;
+	public int maxAmmo = 30;//For testing
 	public bool canAttack;
-	public int damage = 5;
+	public float spreadRadius = 0.03f;
+	public int damage = 1;
+	//Burst
+	public int burstRate = 5;
+	private int burstCounter = 0;
+	public float burstPause = 0.7f;
+	private float burstTimer = 0f;
 
 	[Header("Health")]
 	public float curHealth = 100f;
 	private float minHealth = 0f;
-
 	//Stopping Distance Modifier
 	private float originalStopDistance = 25f;
 	private float tempChaseDistance = 5f;
 
+	[Header("AUDIO")]
+	public AudioClip shootSound;
+	public AudioClip reloadSound;
+	#endregion
+
+	#region UNITY FUNCTIONS
 	private void OnDrawGizmos()
 	{
 
@@ -31,8 +46,7 @@ public class EnemyAttack : MonoBehaviour
 	}
 	private void Start()
 	{
-
-		ammoAmount = 4;
+		currentAmmo = maxAmmo;
 		player = GameObject.FindGameObjectWithTag("Player");
 		enemyAI = GetComponent<EnemyAI>();
 	}
@@ -43,70 +57,88 @@ public class EnemyAttack : MonoBehaviour
 
 			if (Vector3.Distance(enemyAI.transform.position, transform.position) < attackRange)
 			{
+				
 				RaycastHit hit;
 				if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange))
 				{
-					canAttack = true;
 
 					//Player Script Health reference here
 					PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-					//This Is to make enemy to chase the player if the player is not in the ray hit
-					//Making Enemy Cannot Shoot trough an object
-					if (hit.collider.tag != player.tag)
+
+					if (hit.collider.tag == player.tag)
 					{
-						if (hit.collider.tag == player.tag)
+						canAttack = true;
+						//Set back to the originalStopping Distance,so doesnt chase target
+						enemyAI.stopDistance = originalStopDistance;
+						if (Time.time > fireTime && currentAmmo > 0 && canAttack && burstCounter < burstRate)
 						{
-							canAttack = true;
-						}
-						canAttack = false;
-						enemyAI.stopDistance = tempChaseDistance;//Chase the player
-					}
-					else
-						enemyAI.stopDistance = originalStopDistance;//Set back to the originalStopping Distance
-					if (Time.time > fireTime && ammoAmount > 0 && canAttack == true)
-					{
-						if (player == null)
-						{
-							return;
-						}
-						if (player && playerHealth.CurHealth > 0)
-						{
-							playerHealth.CurHealth -= damage;
+							GetComponent<AudioSource>().PlayOneShot(shootSound);
+							//Storing SpreadRadius Direction and Value
+							Vector3 direction = transform.forward;
+							//RANDOM THE SPREAD RANGE on X,Y,Z
+							direction.x += Random.Range(-spreadRadius, spreadRadius);
+							direction.y += Random.Range(-spreadRadius, spreadRadius);
+							direction.z += Random.Range(-spreadRadius, spreadRadius);
+
+							RaycastHit spreadHit;
+
+							burstCounter++;//INCREASE BURST COUNTER for BURST SHOOTING
+							currentAmmo--;//REDUCE AMMO WHEN CAST A RAY
 							fireTime = Time.time + fireRate;
-							ammoAmount--;
-							if (ammoAmount == 0)
+
+							if (Physics.Raycast(transform.position, direction, out spreadHit, attackRange))
 							{
-								canAttack = false;
+
+								if (player && playerHealth.CurHealth > 0)
+								{
+									playerHealth.CurHealth -= damage;
+									Debug.Log("Enemy Attack Hit");
+								}
+
 							}
-							Debug.Log("is attacking");
+							else
+							{
+								Debug.Log("Enemy Attack Missed");
+							}
 						}
 
 					}
-					if (ammoAmount == 0 && canAttack == false)
+					
+					else if (hit.collider.tag != player.tag)
 					{
-						StartCoroutine("Reload");
+						canAttack = false;
+						//CHASE TARGER WHEN IT IS OUT OF SIGHT by reducing the stopping distance check
+						enemyAI.stopDistance = tempChaseDistance;
 					}
-
-
 				}
-
+				//RESET BURST LOGIC
+				if(burstCounter >= burstRate)
+				{
+					burstTimer += Time.deltaTime;
+					if(burstTimer >= burstPause)
+					{
+						burstCounter = 0;
+						burstTimer = 0f;
+					}
+				}
+				if (currentAmmo <= 0)
+				{
+					StartCoroutine("Reload");
+					//GetComponent<AudioSource>().PlayOneShot(reloadSound);
+				}
 			}
-			else
-			{
-				canAttack = false;
-			}
-			Debug.Log(player.tag);
 		}
 	}
+	#endregion
+	#region FUNCTION
 	IEnumerator Reload()
 	{
 		enemyAI.agent.speed = 0f;
-		canAttack = false;
 		yield return new WaitForSeconds(3f);
-		ammoAmount = 4;
-		enemyAI.agent.speed = 3.5f;
-		canAttack = true;
+		currentAmmo = maxAmmo;
+		enemyAI.agent.speed = 5f;
 	}
+	
 	public void TakeDamage(int damage)
 	{
 		enemyAI.isAware = true;
@@ -118,7 +150,7 @@ public class EnemyAttack : MonoBehaviour
 			Destroy(gameObject);
 			Debug.Log("enemy dead");
 		}
-
-		Debug.Log("I got hit - " + damage);
+		Debug.Log("Deal " + damage + " to enemy");
 	}
+	#endregion
 }

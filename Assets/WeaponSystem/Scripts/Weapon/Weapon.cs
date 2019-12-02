@@ -161,7 +161,7 @@ public class Weapon : MonoBehaviour
         // Recoil Recovery
         if (recoil && type != WeaponType.Beam)
         {
-            Debug.Log("Recoil Recover");
+            //Debug.Log("Recoil Recover");
             weaponModel.transform.position = Vector3.Lerp(weaponModel.transform.position, transform.position, recoilRecoveryRate * Time.deltaTime);
             weaponModel.transform.rotation = Quaternion.Lerp(weaponModel.transform.rotation, transform.rotation, recoilRecoveryRate * Time.deltaTime);
         }
