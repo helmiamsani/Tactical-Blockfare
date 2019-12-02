@@ -17,7 +17,7 @@ public class EnemyAttack : MonoBehaviour
 	public int currentAmmo;
 	public int maxAmmo = 30;//For testing
 	public bool canAttack;
-	public float spreadRadius = 0.03f;
+	public float spreadRadius = 0.02f;
 	public int damage = 1;
 	//Burst
 	public int burstRate = 5;

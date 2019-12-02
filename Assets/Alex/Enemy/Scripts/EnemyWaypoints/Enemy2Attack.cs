@@ -12,7 +12,7 @@ public class Enemy2Attack : MonoBehaviour
 	public float fireRate = 0.2f;
 	private float fireTime;
 	public float attackRange = 25f;
-	public float spreadRadius = 0.05f;
+	public float spreadRadius = 0.02f;
 	public int currentAmmo;
 	private int maxAmmo = 30;
 	public bool canAttack;

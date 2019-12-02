@@ -2505,7 +2505,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.251
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5091,7 +5091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1040005276, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
       propertyPath: spreadRadius
-      value: 0.03
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 1040005276, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
       propertyPath: fireRate
@@ -5136,6 +5136,11 @@ PrefabInstance:
     - target: {fileID: 1040005276, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
       propertyPath: maxAmmo
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147350879086854383, guid: 45cd06cc83d7e084bbcb09f50b049009,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthBarPoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45cd06cc83d7e084bbcb09f50b049009, type: 3}
@@ -5922,7 +5927,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.237
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6108,7 +6113,7 @@ GameObject:
   - component: {fileID: 2014786463}
   - component: {fileID: 2014786462}
   m_Layer: 0
-  m_Name: Waypoints
+  m_Name: Waypoints(Enemy 2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6511,7 +6516,7 @@ PrefabInstance:
     - target: {fileID: 2434101053475411224, guid: f71bd5e9b746b2846863e6fe759ad4d3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2434101053475411225, guid: f71bd5e9b746b2846863e6fe759ad4d3,
         type: 3}
@@ -6591,7 +6596,7 @@ PrefabInstance:
     - target: {fileID: 2434101053475411231, guid: f71bd5e9b746b2846863e6fe759ad4d3,
         type: 3}
       propertyPath: spreadRadius
-      value: 0.05
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 2434101053475411231, guid: f71bd5e9b746b2846863e6fe759ad4d3,
         type: 3}
