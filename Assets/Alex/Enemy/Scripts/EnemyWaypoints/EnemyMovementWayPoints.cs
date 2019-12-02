@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿//*ALEX LIU*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyMovementWayPoints : MonoBehaviour
 {
+	#region VARIABLES
 	[Header("Movement")]
 	[HideInInspector]
 	public NavMeshAgent agent; //Public for EnemyAttack Script
@@ -12,11 +14,13 @@ public class EnemyMovementWayPoints : MonoBehaviour
 	public PlayerMovement player;
 	private Renderer rend;
 	//Refenrence Player script for target
+	[Header("Viewing Angle")]
 	private float halfFov;
 	public float fov = 120f;
 	public float viewDistance = 10f;
 	public float stopDistance = 2f;
 	public float detectPlayerRange = 5f;
+	public float lookAtPlayerSpeed = 1.2f;
 	public bool isAware = false;
 	public bool isAttacked = false;//NEED TO REFER TO PLAYER BULLET TO SET AWARE TRUE
 	[Header("Waypoints")]
@@ -24,9 +28,9 @@ public class EnemyMovementWayPoints : MonoBehaviour
 	[SerializeField]
 	private int wayPointIndex;
 
-	
+	#endregion
 
-
+	#region UNITY FUNCTIONS
 	private void Start()
 	{
 		halfFov = fov / 2f;
@@ -84,7 +88,9 @@ public class EnemyMovementWayPoints : MonoBehaviour
 		}
 
 	}
+	#endregion
 
+	#region FUNCTIONS
 	public void SearchPlayer()
 	{
 		//Set the angle in the game object
@@ -141,7 +147,7 @@ public class EnemyMovementWayPoints : MonoBehaviour
 	}
 	public void Chase()
 	{
-		agent.speed = 3.5f;
+		agent.speed = 5f;
 		//Move the enemy to the target
 		agent.SetDestination(player.transform.position);
 
@@ -151,9 +157,9 @@ public class EnemyMovementWayPoints : MonoBehaviour
 		agent.speed = 0f;//Stop the movement
 						 //Using Slerp to rotate slowly to the player direction
 		Quaternion lookAtTarget = Quaternion.LookRotation(player.transform.position - transform.position);
-		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, 1.3f * Time.deltaTime);
+		transform.rotation = Quaternion.Slerp(transform.rotation, lookAtTarget, lookAtPlayerSpeed * Time.deltaTime);
 		//transform.LookAt(playerTransform);//Incase when it stop in range we have to rotate the enemy to face the player to shoot
-		//COULD BE ATTACK FUNCTION HERE
+		
 	}
 	public void DetectPlayerNearby()
 	{
@@ -162,6 +168,5 @@ public class EnemyMovementWayPoints : MonoBehaviour
 			isAware = true;
 		}
 	}
-	
-	
+	#endregion
 }
