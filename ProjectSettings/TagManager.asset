@@ -8,6 +8,8 @@ TagManager:
   - Main Weapon
   - Second Weapon
   - Health
+  - Enemy
+  - Player UI
   layers:
   - Default
   - TransparentFX

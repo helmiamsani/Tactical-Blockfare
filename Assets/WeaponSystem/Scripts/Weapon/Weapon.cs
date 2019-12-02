@@ -29,7 +29,6 @@ public class Weapon : MonoBehaviour
     public GameObject weaponModel;                      // The actual mesh for this weapon
     public Transform raycastStartSpot;                  // The spot that the raycasting weapon system should use as an origin for rays
     
-
     // Projectile
     [Header("Projectile Weapon Only")]
     public GameObject projectile;						// The projectile to be launched (if the type is projectile)
@@ -62,7 +61,7 @@ public class Weapon : MonoBehaviour
     public bool infiniteAmmo = false;                   // Whether or not this weapon should have unlimited ammo
     public int ammoCapacity = 12;                       // The number of rounds this weapon can fire before it has to reload
     public int shotPerRound = 1;                        // The number of "bullets" that will be fired on each round.  Usually this will be 1, but set to a higher number for things like shotguns with spread
-    protected int currentAmmo;                            // How much ammo the weapon currently has
+    public int currentAmmo;                            // How much ammo the weapon currently has
     public float reloadTime = 2.0f;                     // How much time it takes to reload the weapon
     public bool showCurrentAmmo = true;                 // Whether or not the current ammo should be displayed in the GUI
     public bool reloadAutomatically = true;             // Whether or not the weapon should reload automatically when out of ammo
@@ -111,6 +110,10 @@ public class Weapon : MonoBehaviour
     public AudioClip reloadSound;                       // Sound to play when the weapon is reloading
     public AudioClip dryFireSound;                      // Sound to play when the user tries to fire but is out of ammo
 
+    // Animation
+    [Header("Animation")]
+    public Animator animator;
+
     // Other
     protected bool canFire = true;                        // Whether or not the weapon can currently fire (used for semi-auto weapons)
     #endregion
@@ -155,8 +158,22 @@ public class Weapon : MonoBehaviour
         CheckUserInput();
 
         // Reload if the weapon is out of ammo
-        if (reloadAutomatically && currentAmmo <= 0)
-            Reload();
+        //if (reloadAutomatically && currentAmmo <= 0)
+        //    Reload()
+
+        //>>> Helmi adds this script <<<
+        if (weaponModel != null)
+        {
+            PlayerInput plyrInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
+            if (plyrInput.reload)
+            {
+
+                // Added Code (Reload Animation)
+                animator.SetTrigger("Reload");
+                // Added Code
+            }
+        }
+        // >>> Helmi adds this script <<<
 
         // Recoil Recovery
         if (recoil && type != WeaponType.Beam)
@@ -196,12 +213,12 @@ public class Weapon : MonoBehaviour
         weaponModel.transform.Rotate(new Vector3(-kickRot, 0, 0), Space.Self);
     }
 
-    protected void Reload()
+    public void Reload()
     {
-        currentAmmo = ammoCapacity;
         fireTimer = -reloadTime;
+        currentAmmo = ammoCapacity;
         GetComponent<AudioSource>().PlayOneShot(reloadSound);
-
+        
         // Send a messsage so that users can do other actions whenever this happens
         //SendMessageUpwards("OnEasyWeaponsReload", SendMessageOptions.DontRequireReceiver);
     }

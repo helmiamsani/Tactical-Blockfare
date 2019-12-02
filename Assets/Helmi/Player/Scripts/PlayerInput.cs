@@ -18,6 +18,7 @@ public class PlayerInput : MonoBehaviour
     [HideInInspector] public float mouseScroll;
     [HideInInspector] public bool num1;
     [HideInInspector] public bool num2;
+    [HideInInspector] public bool reload;
 
     // Update is called once per frame
     void Update()
@@ -32,6 +33,7 @@ public class PlayerInput : MonoBehaviour
         jump = Input.GetKeyDown(KeyCode.Space); // Input for jumping.
         crouch = Input.GetKeyDown(KeyCode.C); // Input for crouch.
         getDown = Input.GetKeyDown(KeyCode.LeftControl); // Input for getdown.
+        reload = Input.GetKeyDown(KeyCode.R); // Input for getdown.
         interact = Input.GetKey(KeyCode.E); // Input for interact.
         mouseScroll = Input.GetAxis("Mouse ScrollWheel");
         num1 = Input.GetKeyDown(KeyCode.Alpha1);

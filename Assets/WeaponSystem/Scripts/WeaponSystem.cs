@@ -45,9 +45,14 @@ public class WeaponSystem : MonoBehaviour
 			NextWeapon();
 		if (Input.GetAxis("Mouse ScrollWheel") < 0)
 			PreviousWeapon();
-	}
 
-	void OnGUI()
+        // Helmi add this stuff.
+        UIManager manager = GameObject.FindGameObjectWithTag("Player UI").GetComponent<UIManager>();
+        manager.curAmmoText.text = weapons[weaponIndex].GetComponent<Weapon>().currentAmmo.ToString();
+        // Helmi add this stuff.
+    }
+
+    void OnGUI()
 	{
 
 

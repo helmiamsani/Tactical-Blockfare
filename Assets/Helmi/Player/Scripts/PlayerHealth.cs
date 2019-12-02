@@ -10,8 +10,6 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;
     private int curHealth;
     private int minHealth = 0;
-    [Header("References")]
-    public TextMeshProUGUI healthText;
     public int CurHealth
     {
         get
@@ -32,15 +30,6 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        healthText = GetComponentInChildren<TextMeshProUGUI>();
         CurHealth = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        healthText.text = CurHealth.ToString();
-    }
-
-      
+    }      
 }
