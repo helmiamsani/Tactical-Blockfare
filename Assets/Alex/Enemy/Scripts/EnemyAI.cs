@@ -10,7 +10,7 @@ public class EnemyAI : MonoBehaviour
 	[Header("Movement")]
 	[HideInInspector]
 	public NavMeshAgent agent; //Public for EnemyAttack Script
-	public Transform playerTransform;
+	public Transform target;
 	public PlayerMovement player;
 	private Renderer rend;
 	//Refenrence Player script for target
@@ -34,7 +34,7 @@ public class EnemyAI : MonoBehaviour
 		rend = GetComponent<Renderer>();//Renderer for material
 		agent = GetComponent<NavMeshAgent>();
 		wanderPoint = RandomWanderPoint();
-
+		
 
 	}
 	//Drawing Field Of View
@@ -58,6 +58,7 @@ public class EnemyAI : MonoBehaviour
 	{
 		if (isAware)
 		{
+			
 			//Change the color of the enemy into Aware state
 			rend.material.color = Color.yellow;
 
