@@ -65,7 +65,7 @@ public class EnemyAttack : MonoBehaviour
 					//Player Script Health reference here
 					PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
 
-					if (hit.collider.tag == player.tag)
+					if (hit.collider.tag == player.tag && playerHealth.CurHealth > 0)
 					{
 						canAttack = true;
 						//Set back to the originalStopping Distance,so doesnt chase target
